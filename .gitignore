@@ -1,0 +1,7 @@
+__pycache__/
+.idea
+.vscode
+static/temp_saved_files
+speech/
+
+

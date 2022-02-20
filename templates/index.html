@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='style.css') }}">
+    <!-- Compressed CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/css/foundation.min.css"
+        integrity="sha256-ogmFxjqiTMnZhxCqVmcqTvjfe1Y/ec4WaRj/aQPvn+I=" crossorigin="anonymous">
+
+    <!-- Compressed JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.6.3/dist/js/foundation.min.js"
+        integrity="sha256-pRF3zifJRA9jXGv++b06qwtSqX1byFQOLjqa2PTEb2o=" crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    {% if disable_input is defined %}
+    <div>
+        The file is currently made! When it is done another text or document can be loaded.
+    </div>
+    {%else%}
+    <div>
+        <div class="md:grid md:grid-cols-3 md:gap-6">
+            <div class="md:col-span-1">
+                <div class="px-4 sm:px-0">
+                    <h3 class="text-lg font-medium leading-6 text-grey-900">Text to Audio</h3>
+                    <p class="mt-1 text-sm text-gray-600">
+                        The given text, pdf or epub (file) will be converted to speech.
+                    </p>
+                </div>
+            </div>
+            <div class="mt-5 md:mt-0 md:col-span-2">
+                <form action="/" method="POST" enctype="multipart/form-data">
+                    <div class="shadow sm:rounded-md sm-overflow-hidden">
+                        <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+                            <div class="grid grid-cols-3 gap-6">
+                                <div class="col-span-3 sm:col-span-2">
+                                    <label for="selected_text" class="block text-sm font-medium text-gray-700">
+                                        Paste your selected text:
+                                    </label>
+                                    <textarea id="selected_text" name="selected_text"
+                                        class="shadow-sm focus:ring-indigo-500 focus:border-indigo bg-gray-50 text-gray-50 text-sm"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <p>Or</p>
+                        <div class="flex text-sm text-gray-600">
+                            <label for="selected_file"
+                                class="realtive cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-inigo-500">
+                                Select a file:
+                            </label>
+                            <input type="file" id="selected_file" name="selected_file" class="sr-only">
+                        </div>
+                        <div class="col-span-3 sm:col-span-2">
+                            <label for="start_page" class="block text-sm font-medium text-gray-700">
+                                Start Page:
+                            </label>
+                            <div class="mt-1 flex rounded-md shadow-sm">
+                                <input type="number" id="start_page" name="start_page" placeholder="0"
+                                    class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" />
+                            </div>
+                        </div>
+                        <div class="col-span-3 sm:col-span-2">
+                            <label for="end_page" class="block text-sm font-medium text-gray-700">
+                                End Page:
+                            </label>
+                            <div class="mt-1 flex rounded-md shadow-sm">
+                                <input type="number" id="end_page" name="end_page" placeholder="0"
+                                    class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-none rounded-r-md sm:text-sm border-gray-300" />
+                            </div>
+                        </div>
+                        <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                            <button type="submit"
+                                class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <label for="lang">Choose Language:</label>
+                    <select name="lang" id="lang">
+                        <option value="en" selected>Englisch - CA</option>
+                        <option value="be">Nederelands - BE</option>
+                    </select>
+                    <label for="save">Save Speech:</label>
+                    <input type="checkbox" id="save" name="save" value="True" />
+
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% if text is defined %}
+    <div>
+        {% if converted is not defined %}
+        <form action="/" method="POST">
+            <input id="stop_convertion" name="stop_convertion" hidden />
+            <button type="submit">Stop</button>
+        </form>
+        {% endif %}
+        {% if input_type == None %}
+        <div> {{text}} </div>
+        {% else %}
+        <iframe src="{{src}}" width="100%" height="600" style="border:none;"></iframe>
+        {% endif %}
+    </div>
+    {% endif %}
+</body>
+
+</html>
